@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using g3;
 using GorillaExtensions;
 using GorillaLocomotion;
@@ -64,51 +64,6 @@ public class MAINGUI : BaseUnityPlugin
     string roomCode = "";
     bool skellyESP = false;
     bool sphereESP = false;
-    static int[] bones = new int[]
-       {
-            4,
-            3,
-            5,
-            4,
-            19,
-            18,
-            20,
-            19,
-            3,
-            18,
-            21,
-            20,
-            22,
-            21,
-            25,
-            21,
-            29,
-            21,
-            31,
-            29,
-            27,
-            25,
-            24,
-            22,
-            6,
-            5,
-            7,
-            6,
-            10,
-            6,
-            14,
-            6,
-            16,
-            14,
-            12,
-            10,
-            9,
-            7
-       };
-    static GTPlayer GetLoco()
-    {
-        return GTPlayer.Instance;
-    }
     struct Tab { public string Title; public Action Draw; public Tab(string t, Action d) { Title = t; Draw = d; } }
     List<Tab> tabs = new List<Tab>();
     bool gorillatime = false;
@@ -133,7 +88,7 @@ public class MAINGUI : BaseUnityPlugin
     bool tahgun = false;
     bool noclipping = false;
     bool lowgravvity = false;
-    static List<LineRenderer> TracerLines = new List<LineRenderer>();
+  
     void OnGUI()
     {
         if (!ini)
@@ -719,7 +674,7 @@ public class MAINGUI : BaseUnityPlugin
         GUILayout.Label("creds to rtf for tpgun and ghost monkey", centerLabel);
         GUILayout.Label("creds to CrysGT or coolgamerdube for the boxesp", centerLabel);
         GUILayout.Label("NOT-HACKERZ (HELPED WITH THE GUI)", centerLabel);
-        GUILayout.Label("Creds To Malachi for the Skeleton ESP Sphere ESP ", centerLabel);
+        GUILayout.Label("creds to Malachi for variables/extra code", centerLabel);
         GUILayout.FlexibleSpace();
     }
     void espI(int id)
@@ -877,7 +832,48 @@ public class MAINGUI : BaseUnityPlugin
                 {
                     Color color = vrrig.playerColor;
                     Transform[] bones = vrrig.mainSkin.bones;
-                    int[] bonePairs = MAINGUI.bones;
+                    int[] bonePairs = new int[]
+ {
+    8,
+    12,
+    27,
+    15,
+    33,
+    41,
+    19,
+    5,
+    48,
+    22,
+    7,
+    13,
+    29,
+    36,
+    18,
+    24,
+    40,
+    11,
+    21,
+    9,
+    14,
+    6,
+    31,
+    44,
+    28,
+    39,
+    3,
+    20,
+    26,
+    16,
+    10,
+    4,
+    37,
+    42,
+    2,
+    30,
+    1,
+    23
+ };
+
                     LineRenderer headLine = GTExt.GetOrAddComponent<LineRenderer>(vrrig.head.rigTarget.gameObject);
                     headLine.startWidth = headLine.endWidth = width;
                     headLine.material.shader = shader;
@@ -928,52 +924,52 @@ public class MAINGUI : BaseUnityPlugin
                         lr.endWidth = 0.01f;
                         lr.positionCount = 2;
                         lr.useWorldSpace = true;
-                        lr.SetPosition(0, GetTracerPos());
+                        lr.SetPosition(0, trace());
                         lr.SetPosition(1, vrrig.transform.position);
                         lr.material.shader = Shader.Find("GUI/Text Shader");
                         lr.startColor = color;
                         lr.endColor = color;
-                        if (!MAINGUI.TracerLines.Contains(lr))
-                            MAINGUI.TracerLines.Add(lr);
+                        if (!new List<LineRenderer>().Contains(lr))
+                            new List<LineRenderer>().Add(lr);
                     }
                 }
             }
             else
             {
-                if (MAINGUI.TracerLines.Count > 0)
+                if (new List<LineRenderer>().Count > 0)
                 {
-                    foreach (LineRenderer lineRenderer in MAINGUI.TracerLines)
+                    foreach (LineRenderer lineRenderer in new List<LineRenderer>())
                         UnityEngine.Object.Destroy(lineRenderer);
-                    MAINGUI.TracerLines.Clear();
+                    new List<LineRenderer>().Clear();
                 }
             }
         }
         else
         {
-            if (MAINGUI.TracerLines.Count > 0)
+            if (new List<LineRenderer>().Count > 0)
             {
-                foreach (LineRenderer lineRenderer in MAINGUI.TracerLines)
+                foreach (LineRenderer lineRenderer in new List<LineRenderer>())
                     UnityEngine.Object.Destroy(lineRenderer);
-                MAINGUI.TracerLines.Clear();
+                new List<LineRenderer>().Clear();
             }
         }
     }
-    static int change25 = 1;
-    static Vector3 GetTracerPos()
+    static int system = 1;
+    static Vector3 trace()
     {
-        switch (change25)
+        switch (system)
         {
             case 1:
-                return MAINGUI.GetLoco().rightControllerTransform.position;
+                return GTPlayer.Instance.rightControllerTransform.position;
 
             case 2:
-                return MAINGUI.GetLoco().leftControllerTransform.position;
+                return GTPlayer.Instance.leftControllerTransform.position;
 
             case 3:
-                return MAINGUI.GetLoco().bodyCollider.transform.position - new Vector3(0f, 0.3f, 0f);
+                return GTPlayer.Instance.bodyCollider.transform.position - new Vector3(0f, 0.3f, 0f);
 
             case 4:
-                return MAINGUI.GetLoco().bodyCollider.transform.position + new Vector3(0f, 0.5f, 0f);
+                return GTPlayer.Instance.bodyCollider.transform.position + new Vector3(0f, 0.5f, 0f);
 
             default:
                 return Vector3.zero;
