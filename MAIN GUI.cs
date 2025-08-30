@@ -15,7 +15,7 @@ using ASTRA_CLIENT.main;
 
 
 
-[BepInPlugin("HI", "GUI", "1.1.1")]
+[BepInPlugin(ASTRA_CLIENT.main.PluginInfo.GUID, ASTRA_CLIENT.main.PluginInfo.Name, ASTRA_CLIENT.main.PluginInfo.Version)]
 public class MAINGUI : BaseUnityPlugin
 {
     Rect windowRect = new Rect(120, 120, 650, 500);
@@ -31,7 +31,7 @@ public class MAINGUI : BaseUnityPlugin
     GUIStyle? sliderStyle;
     GUIStyle? sliderThumbStyle;
     bool boxESP1 = false;
-    bool boxESP2 = false;
+    bool boxESP2 = false; 
     bool boxESP3 = false;
     bool tracersESP = false;
 
