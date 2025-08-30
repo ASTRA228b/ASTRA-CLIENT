@@ -1,4 +1,4 @@
-﻿
+
 using BepInEx;
 using HarmonyLib;
 using UnityEngine;
@@ -19,15 +19,23 @@ namespace ASTRA_CLIENT.main
         public static GameObject? canvasObject;
         public static Font currentFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
 
-        public void Start()
+        public void Prefix()
         {
-            ToggleMenu();
+            try
+            {
+                bool openmenun = ControllerInputPoller.instance.leftControllerSecondaryButton;
+                if (openmenun)
+                {
+                    CreateMenu();
+                }
+            }
+            catch (Exception exc)
+            {
+                Debug.LogError($"[ASTRA CLIENT] Error in MainMenu Prefix: {exc.Message}");
+            }
         }
 
-        public void Update()
-        {
-            ToggleMenu();
-        }
+
 
         public static void CreateMenu()
         {
@@ -76,13 +84,14 @@ namespace ASTRA_CLIENT.main
             component.rotation = Quaternion.Euler(new Vector3(180f, 90f, 90f));
         }
 
-        public static void ToggleMenu()
-        {
-            bool openmenun = ControllerInputPoller.instance.rightControllerSecondaryButton;
-            if (openmenun)
-            {
-                CreateMenu();
-            }
-        }
+        
+
+    }
+
+    internal class PluginInfo
+    {
+        public const string GUID = "ASTRA.MODS.CLIENT";
+        public const string Name = "ASTRA CLIENT";
+        public const string Version = "1.0.2";
     }
 }
