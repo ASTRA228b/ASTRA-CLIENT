@@ -10,8 +10,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace ASTRA_CLIENT.main
 {
-    [HarmonyPatch(typeof(GorillaLocomotion.GTPlayer))]
-    [HarmonyPatch("LateUpdate", MethodType.Normal)]
+   
     public class MainMenu : MonoBehaviour
     {
         public static Font currentFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
@@ -32,3 +31,4 @@ namespace ASTRA_CLIENT.main
         public const string GUID = "idk.mod.PATCH";
     }
 }
+
