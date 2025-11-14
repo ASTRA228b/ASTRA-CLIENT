@@ -18,9 +18,7 @@ using static Mono.Security.X509.X509Stores;
 using static Photon.Pun.UtilityScripts.TabViewManager;
 using UIEventType = UnityEngine.EventType;
 
-[HarmonyPatch(typeof(GrowingSnowballThrowable), "SnowballThrowEventReceiver")]
-[HarmonyPatch(typeof(GorillaLocomotion.GTPlayer))]
-[HarmonyPatch("LateUpdate", MethodType.Normal)]
+
 [BepInPlugin(ASTRA_CLIENT.main.PluginInfo.GUID, ASTRA_CLIENT.main.PluginInfo.Name, ASTRA_CLIENT.main.PluginInfo.Version)]
 public class MAINGUI : BaseUnityPlugin
 {
@@ -1003,3 +1001,4 @@ public class MAINGUI : BaseUnityPlugin
     }
 
 }
+
