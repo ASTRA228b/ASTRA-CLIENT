@@ -16,7 +16,7 @@ ASTRA-CLIENT is a custom Gorilla Tag client made for experimenting, learning, an
 ## Installation
    1. Donload the '.dll' from the newest release **Download link: https://github.com/ASTRA228b/ASTRA-CLIENT/releases**
    2. Open Steam click on 'Gorilla Tag' then click on the gear thingy in there click on manage then browse local files then go to the `BepInEx/plugins` folder
-   3. Drag the '.dll' file into your `BepInEx/plugins` folder then start your game an injoy
+   3. Drag the '.dll' file into your `BepInEx/plugins` folder then start your game and injoy
 
 
 ## Disclaimer
