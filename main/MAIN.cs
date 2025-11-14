@@ -22,7 +22,7 @@ namespace ASTRA_CLIENT.main
     {
         public const string GUID = "ASTRA.MODS.CLIENT";
         public const string Name = "ASTRA CLIENT";
-        public const string Version = "1.0.2";
+        public const string Version = "5.5.1";
     }
     internal class INFO2
     {
@@ -31,4 +31,5 @@ namespace ASTRA_CLIENT.main
         public const string GUID = "idk.mod.PATCH";
     }
 }
+
 
