@@ -1,4 +1,4 @@
-﻿using ASTRA_CLIENT.main;
+using ASTRA_CLIENT.main;
 using ASTRA_CLIENT.Utilities;
 using BepInEx;
 using g3;
@@ -17,7 +17,6 @@ using UnityEngine.Networking;
 using static Mono.Security.X509.X509Stores;
 using static Photon.Pun.UtilityScripts.TabViewManager;
 using UIEventType = UnityEngine.EventType;
-
 
 [BepInPlugin(ASTRA_CLIENT.main.PluginInfo.GUID, ASTRA_CLIENT.main.PluginInfo.Name, ASTRA_CLIENT.main.PluginInfo.Version)]
 public class MAINGUI : BaseUnityPlugin
@@ -814,6 +813,7 @@ public class MAINGUI : BaseUnityPlugin
                 }
             }
         }
+        // creds to gemini for fixing my fucked up code 
         if (skellyESP)
         {
             float width = 0.025f;
@@ -821,66 +821,89 @@ public class MAINGUI : BaseUnityPlugin
 
             foreach (VRRig vrrig in GorillaParent.instance.vrrigs)
             {
-                if (vrrig != GorillaTagger.Instance.offlineVRRig)
+                if (vrrig != GorillaTagger.Instance.offlineVRRig && vrrig.mainSkin != null && vrrig.mainSkin.bones.Length > 0)
                 {
                     Color color = vrrig.playerColor;
                     Transform[] bones = vrrig.mainSkin.bones;
-                    int[] bonePairs = new int[]
- {
-    8,
-    12,
-    27,
-    15,
-    33,
-    41,
-    19,
-    5,
-    48,
-    22,
-    7,
-    13,
-    29,
-    36,
-    18,
-    24,
-    40,
-    11,
-    21,
-    9,
-    14,
-    6,
-    31,
-    44,
-    28,
-    39,
-    3,
-    20,
-    26,
-    16,
-    10,
-    4,
-    37,
-    42,
-    2,
-    30,
-    1,
-    23
- };
 
-                    LineRenderer headLine = GTExt.GetOrAddComponent<LineRenderer>(vrrig.head.rigTarget.gameObject);
-                    headLine.startWidth = headLine.endWidth = width;
-                    headLine.material.shader = shader;
-                    headLine.startColor = headLine.endColor = color;
-                    headLine.SetPosition(0, vrrig.head.rigTarget.position + new Vector3(0f, 0.16f, 0f));
-                    headLine.SetPosition(1, vrrig.head.rigTarget.position - new Vector3(0f, 0.4f, 0f));
+                    int[] bonePairs = new int[]
+                    {
+                8, 12, 27, 15, 33, 41, 19, 5, 48, 22, 7, 13, 29, 36, 18, 24, 40, 11, 21, 9, 14, 6, 31, 44, 28, 39, 3, 20, 26, 16, 10, 4, 37, 42, 2, 30, 1, 23
+                    };
+
+                    if (vrrig.head.rigTarget != null)
+                    {
+                        LineRenderer headLine = GTExt.GetOrAddComponent<LineRenderer>(vrrig.head.rigTarget.gameObject);
+                        headLine.enabled = true;
+                        headLine.startWidth = headLine.endWidth = width;
+                        if (headLine.material == null)
+                        {
+                            headLine.material = new Material(shader);
+                        }
+                        else
+                        {
+                            headLine.material.shader = shader;
+                        }
+                        headLine.startColor = headLine.endColor = color;
+                        headLine.SetPosition(0, vrrig.head.rigTarget.position + new Vector3(0f, 0.16f, 0f));
+                        headLine.SetPosition(1, vrrig.head.rigTarget.position - new Vector3(0f, 0.4f, 0f));
+                    }
+
                     for (int i = 0; i < bonePairs.Length; i += 2)
                     {
-                        LineRenderer lr = GTExt.GetOrAddComponent<LineRenderer>(bones[bonePairs[i]].gameObject);
-                        lr.startWidth = lr.endWidth = width;
-                        lr.material.shader = shader;
-                        lr.startColor = lr.endColor = color;
-                        lr.SetPosition(0, bones[bonePairs[i]].position);
-                        lr.SetPosition(1, bones[bonePairs[i + 1]].position);
+                        if (bonePairs[i] < bones.Length && bonePairs[i + 1] < bones.Length)
+                        {
+                            if (bones[bonePairs[i]] != null)
+                            {
+                                LineRenderer lr = GTExt.GetOrAddComponent<LineRenderer>(bones[bonePairs[i]].gameObject);
+                                lr.enabled = true;
+                                lr.startWidth = lr.endWidth = width;
+                                if (lr.material == null)
+                                {
+                                    lr.material = new Material(shader);
+                                }
+                                else
+                                {
+                                    lr.material.shader = shader;
+                                }
+                                lr.startColor = lr.endColor = color;
+                                lr.SetPosition(0, bones[bonePairs[i]].position);
+                                lr.SetPosition(1, bones[bonePairs[i + 1]].position);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (VRRig vrrig in GorillaParent.instance.vrrigs)
+            {
+                if (vrrig != null && vrrig.head.rigTarget != null)
+                {
+                    if (vrrig.head.rigTarget.gameObject.TryGetComponent(out LineRenderer headLine))
+                    {
+                        headLine.enabled = false;
+                    }
+                }
+
+                if (vrrig != null && vrrig.mainSkin != null && vrrig.mainSkin.bones.Length > 0)
+                {
+                    Transform[] bones = vrrig.mainSkin.bones;
+                    int[] bonePairs = new int[]
+                    {
+                8, 12, 27, 15, 33, 41, 19, 5, 48, 22, 7, 13, 29, 36, 18, 24, 40, 11, 21, 9, 14, 6, 31, 44, 28, 39, 3, 20, 26, 16, 10, 4, 37, 42, 2, 30, 1, 23
+                    };
+
+                    for (int i = 0; i < bonePairs.Length; i += 2)
+                    {
+                        if (bonePairs[i] < bones.Length && bones[bonePairs[i]] != null)
+                        {
+                            if (bones[bonePairs[i]].gameObject.TryGetComponent(out LineRenderer lr))
+                            {
+                                lr.enabled = false;
+                            }
+                        }
                     }
                 }
             }
@@ -1001,4 +1024,3 @@ public class MAINGUI : BaseUnityPlugin
     }
 
 }
-
